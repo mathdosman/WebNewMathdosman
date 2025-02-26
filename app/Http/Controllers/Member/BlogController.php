@@ -22,7 +22,7 @@ class BlogController extends Controller
             if($search){
                 $query->where('title','like',"%{$search}%")->orWhere('content','like',"%{$search}%");
             }
-        })->orderBy('id','desc')->paginate(3);
+        })->orderBy('id','desc')->paginate(10);
         return view('member.blogs.index', compact('data'));
     }
 

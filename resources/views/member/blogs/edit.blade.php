@@ -42,9 +42,9 @@
                             </div>
                             <script>
                                 $('#content').summernote({
-                                  placeholder: 'isi konten . . .',
+                                  placeholder: 'Hello stand alone ui',
                                   tabsize: 2,
-                                  height: 300,
+                                  height: 120,
                                   toolbar: [
                                     ['style', ['style']],
                                     ['font', ['bold', 'underline', 'clear']],

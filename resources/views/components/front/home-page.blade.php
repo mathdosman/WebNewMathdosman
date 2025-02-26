@@ -5,8 +5,20 @@
         <div class="col-md-10 col-lg-8 col-xl-7">
             @foreach ($data as $key=>$value)
             <!-- Post preview-->
-            <x-front.blog-list title='{{ $value->title }}' description='{{ $value->description }}' date="{{ $value->created_at->isoFormat('dddd, D MMMM Y') }}" user='{{ $value->user->name }}' link="{{ route('blog-detail',['slug'=>$value->slug]) }}" />
-
+            <div class="row">
+                <div class="col-3">
+                    @if($value->thumbnail == 0)
+                    <img src="{{ asset('thumbnails/kosong.png') }}" alt="" width="100px" style="display:block; margin-top:40px; margin-left:auto; margin-right:auto">
+                    @else
+                    @isset($value->thumbnail)
+                        <img src="{{ asset(getenv('CUSTOM_THUMBNAIL_LOCATION').'/'.$value->thumbnail) }}" width="100px" style="display:block; margin-top:40px; margin-left:auto; margin-right:auto" />
+                    @endisset
+                    @endif
+                </div>
+                <div class="col-9">
+                    <x-front.blog-list title='{{ $value->title }}' description='{{ $value->description }}' date="{{ $value->created_at->isoFormat('dddd, D MMMM Y') }}" user='{{ $value->user->name }}' link="{{ route('blog-detail',['slug'=>$value->slug]) }}" />
+                </div>
+            </div>
             @endforeach
             <!-- Pager-->
             <div class="d-flex justify-content-between mb-4">
