@@ -14,7 +14,7 @@
                 <div class="d-flex justify-content-between mb-4 mt-5">
                     <div>
                         @if ($pagination['next'])
-                        <a href="{{ route('blog-detail',['slug'=>$pagination['next']->slug]) }}">&larr;{{ $pagination['next']->title }}  </a>
+                        <a href="{{ route('blog-detail',['slug'=>$pagination['next']->slug]) }}">&larr; {{ $pagination['next']->title }}  </a>
                         @else
                         <span></span>
                         @endif

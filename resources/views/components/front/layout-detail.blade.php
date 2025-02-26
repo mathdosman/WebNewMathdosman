@@ -6,7 +6,8 @@
         <meta name="description" content="" />
         <meta name="author" content="" />
         <title>@isset($pageTitle){{ $pageTitle." | " }}@endisset {{ getenv('APP_NAME') }}</title>
-        <link rel="icon" type="image/x-icon" href="assets/favicon.ico" />
+        <link rel="icon" type="image/png" href="{{ asset('assets/img2/logonew.png') }}">
+        {{-- <link rel="icon" type="image/x-icon" href="assets/favicon.ico" /> --}}
         <!-- Font Awesome icons (free version)-->
         <script src="https://use.fontawesome.com/releases/v6.3.0/js/all.js" crossorigin="anonymous"></script>
         <!-- Google fonts-->
@@ -28,7 +29,7 @@
     <div class="container px-4 px-lg-5">
         <div class="row gx-4 gx-lg-5 justify-content-center">
             <div class="col-md-10 col-lg-8 col-xl-7">
-                <div class="small text-center text-muted fst-italic">Copyright &copy; Your Website 2025</div>
+                <div class="small text-center text-muted fst-italic">Copyright &copy; mathdosman 2025</div>
             </div>
         </div>
     </div>
