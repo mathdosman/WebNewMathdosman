@@ -1,11 +1,10 @@
 <x-front.layout-detail>
+    <x-slot name='pageTitle'>{{ $data->title }}</x-slot>
     <div class="" style="margin-top:100px">
         <h1 class="text-center">{{ $data->title }}</h1>
-        <p class="text-center">{{ $data->created_at->isoFormat('dddd, D MMMM Y') }}</p>
-        <p>tes \(\frac{2}{3}\)</p>
+        <p class="text-center" style="font-size: 1rem !important">{{ $data->created_at->isoFormat('dddd, D MMMM Y') }}</p>
     </div>
 <!-- Main Content-->
-<x-slot name='pageTitle'>{{ $data->title }}</x-slot>
 <article class="mb-4 mt-3">
     <div class="container px-4 px-lg-5">
         <div class="row gx-4 gx-lg-5 justify-content-center">

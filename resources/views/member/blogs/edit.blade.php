@@ -38,9 +38,28 @@
                                 <input type="file" name="thumbnail" class="w-full border border-gray-300 rounded-md"/>
                             </div>
                             <div>
+                                <textarea name="content" id="content" cols="30" rows="10">{!! old('content',$data->content )!!}</textarea>
+                            </div>
+                            <script>
+                                $('#content').summernote({
+                                  placeholder: 'isi konten . . .',
+                                  tabsize: 2,
+                                  height: 300,
+                                  toolbar: [
+                                    ['style', ['style']],
+                                    ['font', ['bold', 'underline', 'clear']],
+                                    ['color', ['color']],
+                                    ['para', ['ul', 'ol', 'paragraph']],
+                                    ['table', ['table']],
+                                    ['insert', ['link', 'picture', 'video']],
+                                    ['view', ['fullscreen', 'codeview', 'help']]
+                                  ]
+                                });
+                              </script>
+                            {{-- <div>
                                 <x-textarea-trix value="{!! old('content',$data->content )!!}" id="x" name="content">
                                 </x-textarea-trix>
-                            <div>
+                            <div> --}}
                                 <x-select name="status">
                                     <option value="draft" {{ (old('status',$data->status)=='draft')?'selected':'' }}>Draft</option>
                                     <option value="publish" {{ (old('status',$data->status)=='publish')?'selected':'' }}>Publish</option>
