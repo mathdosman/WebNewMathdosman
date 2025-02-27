@@ -35,6 +35,15 @@
         </div>
     </div>
 </div>
+</div>
 
+<a class="float" data-bs-toggle="offcanvas" href="#offcanvasExample" role="button" aria-controls="offcanvasExample">
+
+        <svg xmlns="http://www.w3.org/2000/svg" width="32" height="auto" fill="currentColor" class="bi bi-chevron-expand" viewBox="0 0 16 16">
+            <path fill-rule="evenodd" d="M3.646 9.146a.5.5 0 0 1 .708 0L8 12.793l3.646-3.647a.5.5 0 0 1 .708.708l-4 4a.5.5 0 0 1-.708 0l-4-4a.5.5 0 0 1 0-.708m0-2.292a.5.5 0 0 0 .708 0L8 3.207l3.646 3.647a.5.5 0 0 0 .708-.708l-4-4a.5.5 0 0 0-.708 0l-4 4a.5.5 0 0 0 0 .708"/>
+          </svg>
+</a>
+
+@include('components.front.drawer')
 </x-front.layout>
 

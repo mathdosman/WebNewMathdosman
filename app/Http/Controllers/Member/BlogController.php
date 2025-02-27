@@ -2,11 +2,13 @@
 
 namespace App\Http\Controllers\Member;
 
+use DOMDocument;
 use App\Models\Post;
 use Illuminate\Support\Str;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Gate;
 
 class BlogController extends Controller
@@ -53,23 +55,50 @@ class BlogController extends Controller
         ]);
 
         if($request->hasFile('thumbnail')){
-            $image = $request->file('thumbnail');
-            $image_name = time()."_".$image->getClientOriginalName();
+            $gambar = $request->file('thumbnail');
+            $gambar_name = time()."_".$gambar->getClientOriginalName();
             $destination_path = public_path(getenv('CUSTOM_THUMBNAIL_LOCATION'));
-            $image->move($destination_path, $image_name);
+            $gambar->move($destination_path, $gambar_name);
         }
 
-        $data=[
+        $content = $request->content;
+
+        $dom = new DOMDocument();
+        $dom->loadHTML($content,9);
+
+        $images = $dom->getElementsByTagName('img');
+
+        foreach ($images as $key => $img) {
+            $data = base64_decode(explode(',',explode(';',$img->getAttribute('src'))[1])[1]);
+            $image_name = "/upload/" . time(). $key.'.png';
+            file_put_contents(public_path().$image_name,$data);
+
+            $img->removeAttribute('src');
+            $img->setAttribute('src',$image_name);
+        }
+        $content = $dom->saveHTML();
+
+        Post::create([
             'title'=> $request->title,
             'description'=> $request->description,
-            'content'=> $request->content,
+            'content'=> $content,
             'status'=> $request->status,
-            'thumbnail'=>isset($image_name)?$image_name : null,
+            'thumbnail'=>isset($gambar_name)?$gambar_name : null,
             'slug'=> $this->generateSlug($request->title),
             'user_id' => Auth::user()->id
-        ];
+        ]);
 
-        Post::create($data);
+        // $data=[
+        //     'title'=> $request->title,
+        //     'description'=> $request->description,
+        //     'content'=> $content,
+        //     'status'=> $request->status,
+        //     'thumbnail'=>isset($image_name)?$image_name : null,
+        //     'slug'=> $this->generateSlug($request->title),
+        //     'user_id' => Auth::user()->id
+        // ];
+
+        // Post::create($data);
         return redirect()->route('member.blogs.index')->with('success','Data berhasil ditambahkan');
     }
 
@@ -113,16 +142,39 @@ class BlogController extends Controller
             if(isset($post->thumbnail) && file_exists(public_path(getenv('CUSTOM_THUMBNAIL_LOCATION'))."/".$post->thumbnail)){
                 unlink(public_path(getenv('CUSTOM_THUMBNAIL_LOCATION'))."/".$post->thumbnail);
             }
-            $image = $request->file('thumbnail');
-            $image_name = time()."_".$image->getClientOriginalName();
+            $gambar = $request->file('thumbnail');
+            $gambar_name = time()."_".$gambar->getClientOriginalName();
             $destination_path = public_path(getenv('CUSTOM_THUMBNAIL_LOCATION'));
-            $image->move($destination_path, $image_name);
+            $gambar->move($destination_path, $gambar_name);
         }
+
+        $content = $request->content;
+
+        $dom = new DOMDocument();
+        $dom->loadHTML($content,9);
+
+        $images = $dom->getElementsByTagName('img');
+
+        foreach ($images as $key => $img) {
+
+            // Check if the image is a new one
+            if (strpos($img->getAttribute('src'),'data:image/') ===0) {
+
+                $data = base64_decode(explode(',',explode(';',$img->getAttribute('src'))[1])[1]);
+                $image_name = "/upload/" . time(). $key.'.png';
+                file_put_contents(public_path().$image_name,$data);
+
+                $img->removeAttribute('src');
+                $img->setAttribute('src',$image_name);
+            }
+
+        }
+        $content = $dom->saveHTML();
 
         $data=[
             'title'=> $request->title,
             'description'=> $request->description,
-            'content'=> $request->content,
+            'content'=> $content,
             'status'=> $request->status,
             'slug'=> $this->generateSlug($request->title, $post->id),
             'thumbnail'=>isset($image_name)?$image_name : $post->thumbnail
@@ -142,6 +194,23 @@ class BlogController extends Controller
         if(isset($post->thumbnail) && file_exists(public_path(getenv('CUSTOM_THUMBNAIL_LOCATION'))."/".$post->thumbnail)){
             unlink(public_path(getenv('CUSTOM_THUMBNAIL_LOCATION'))."/".$post->thumbnail);
         }
+
+        $dom= new DOMDocument();
+        $dom->loadHTML($post->content,9);
+        $images = $dom->getElementsByTagName('img');
+
+        foreach ($images as $key => $img) {
+
+            $src = $img->getAttribute('src');
+            $path = Str::of($src)->after('/');
+
+
+            if (File::exists($path)) {
+                File::delete($path);
+
+            }
+        }
+
         Post::where('id',$post->id)->delete();
         return redirect()->route('member.blogs.index')->with('success','Data berhasil dihapus!');
     }

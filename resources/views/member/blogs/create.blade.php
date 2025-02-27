@@ -40,7 +40,7 @@
                                 $('#content').summernote({
                                   placeholder: 'isi konten . . .',
                                   tabsize: 2,
-                                  height: 300,
+                                  height: 500,
                                   toolbar: [
                                     ['style', ['style']],
                                     ['font', ['bold', 'underline', 'clear']],
